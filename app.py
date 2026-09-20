@@ -13,30 +13,40 @@ st.set_page_config(
 # Helper Functions
 def get_image(prefix: str):
 
-    camera_image = st.camera_input(
-        "Take a photo",
-        key=f"{prefix}_camera"
+    source = st.radio(
+        "Select image source",
+        ["Camera", "Upload from device"],
+        horizontal=True,
+        key=f"{prefix}_source"
     )
 
+    # Camera option
+    if source == "Camera":
+
+        camera_image = st.camera_input(
+            "Take a photo",
+            key=f"{prefix}_camera"
+        )
+
+        return camera_image
+
+    # Upload option
     uploaded_image = st.file_uploader(
-        "Or upload an image",
+        "Choose an image",
         type=["jpg", "jpeg", "png"],
         key=f"{prefix}_upload"
     )
 
-    if camera_image is not None:
-        return camera_image
-
+    # Show uploaded image only
     if uploaded_image is not None:
-        return uploaded_image
 
-    return None
+        st.image(
+            uploaded_image,
+            caption="Uploaded image",
+            width=300
+        )
 
-
-def show_image(image, caption: str):
-
-    if image is not None:
-        st.image(image, caption=caption, width=300)
+    return uploaded_image
 
 
 def show_match_result(result: dict):
@@ -66,8 +76,6 @@ def register_section():
     st.subheader("Face Image")
 
     selected_image = get_image("register")
-
-    show_image(selected_image, "Selected image")
 
     st.divider()
 
@@ -117,8 +125,6 @@ def search_section():
     st.subheader("Face Image")
 
     selected_image = get_image("search")
-
-    show_image(selected_image, "Search image")
 
     st.divider()
 
