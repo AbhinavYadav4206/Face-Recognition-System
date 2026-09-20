@@ -49,15 +49,11 @@ def show_match_result(result: dict):
 
         st.header(person["name"])
 
-        st.write(f"Person Name: **{person['name']}**")
-
-        st.metric("Similarity", f"{result['similarity']:.2%}")
+        st.write(f"Person ID: **{person['person_id']}**")
 
     else:
-        st.error(result["message"])
 
-        if result.get("similarity") is not None:
-            st.write("Best similarity:", f"{result['similarity']:.2%}")
+        st.error(result["message"])
 
 
 # Register Section
